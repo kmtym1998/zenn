@@ -12,6 +12,7 @@ import (
 	"kmtym1998/zenn-tools/service"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/sync/errgroup"
 )
 
 func init() {
@@ -51,50 +52,61 @@ var lsCmd = &cobra.Command{
 		rg1 := regexp.MustCompile("<title.*?</title>")
 		rg2 := regexp.MustCompile("<.*?>")
 
+		var eg errgroup.Group
 		var displayInfoList []map[string]string
 		for _, f := range fileNames {
-			if filepath.Ext(f) != ".md" {
-				continue
-			}
+			f := f
 
-			metadata, err := service.ParseMDMetadata(dirPath + "/" + f)
-			if err != nil {
+			eg.Go(func() error {
+				if filepath.Ext(f) != ".md" {
+					return nil
+				}
+
+				metadata, err := service.ParseMDMetadata(dirPath + "/" + f)
+				if err != nil {
+					return err
+				}
+
+				baseName := filepath.Base(f[:len(f)-len(filepath.Ext(f))])
+				resp, err := service.SendRequest(http.MethodGet, "https://zenn.dev/kmtym1998/articles/"+baseName, nil)
+				if err != nil {
+					return err
+				}
+				defer resp.Body.Close()
+
+				b, err := io.ReadAll(resp.Body)
+				if err != nil {
+					return err
+				}
+
+				match := rg1.FindAllString(string(b), -1)
+				if err != nil {
+					return err
+				}
+
+				var title string
+				if len(match) != 0 {
+					title = rg2.ReplaceAllString(match[0], "")
+				} else {
+					title = "タイトル不明"
+				}
+
+				displayInfoList = append(
+					displayInfoList,
+					map[string]string{
+						"status": resp.Status,
+						"emoji":  metadata.Emoji,
+						"title":  title,
+						"url":    "https://zenn.dev/kmtym/articles/" + baseName,
+					},
+				)
+
+				return nil
+			})
+
+			if err := eg.Wait(); err != nil {
 				panic(err)
 			}
-
-			baseName := filepath.Base(f[:len(f)-len(filepath.Ext(f))])
-			resp, err := service.SendRequest(http.MethodGet, "https://zenn.dev/kmtym1998/articles/"+baseName, nil)
-			if err != nil {
-				panic(err)
-			}
-			defer resp.Body.Close()
-
-			b, err := io.ReadAll(resp.Body)
-			if err != nil {
-				panic(err)
-			}
-
-			match := rg1.FindAllString(string(b), -1)
-			if err != nil {
-				panic(err)
-			}
-
-			var title string
-			if len(match) != 0 {
-				title = rg2.ReplaceAllString(match[0], "")
-			} else {
-				title = "タイトル不明"
-			}
-
-			displayInfoList = append(
-				displayInfoList,
-				map[string]string{
-					"status": resp.Status,
-					"emoji":  metadata.Emoji,
-					"title":  title,
-					"url":    "https://zenn.dev/kmtym/articles/" + baseName,
-				},
-			)
 		}
 
 		for _, d := range displayInfoList {
