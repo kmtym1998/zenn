@@ -2,15 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
-	"regexp"
 
 	"kmtym1998/zenn-tools/service"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 )
@@ -49,9 +47,6 @@ var lsCmd = &cobra.Command{
 			fileNames = append(fileNames, info.Name())
 		}
 
-		rg1 := regexp.MustCompile("<title.*?</title>")
-		rg2 := regexp.MustCompile("<.*?>")
-
 		var eg errgroup.Group
 		var displayInfoList []map[string]string
 		for _, f := range fileNames {
@@ -68,36 +63,19 @@ var lsCmd = &cobra.Command{
 				}
 
 				baseName := filepath.Base(f[:len(f)-len(filepath.Ext(f))])
-				resp, err := service.SendRequest(http.MethodGet, "https://zenn.dev/kmtym1998/articles/"+baseName, nil)
-				if err != nil {
-					return err
-				}
-				defer resp.Body.Close()
 
-				b, err := io.ReadAll(resp.Body)
-				if err != nil {
-					return err
-				}
-
-				match := rg1.FindAllString(string(b), -1)
-				if err != nil {
-					return err
-				}
-
-				var title string
-				if len(match) != 0 {
-					title = rg2.ReplaceAllString(match[0], "")
-				} else {
-					title = "タイトル不明"
+				status := color.RedString("未公開")
+				if metadata.Published {
+					status = color.GreenString("公開中")
 				}
 
 				displayInfoList = append(
 					displayInfoList,
 					map[string]string{
-						"status": resp.Status,
+						"status": status,
 						"emoji":  metadata.Emoji,
-						"title":  title,
-						"url":    "https://zenn.dev/kmtym/articles/" + baseName,
+						"title":  metadata.Title,
+						"url":    "https://zenn.dev/kmtym1998/articles/" + baseName,
 					},
 				)
 
@@ -112,12 +90,8 @@ var lsCmd = &cobra.Command{
 		for _, d := range displayInfoList {
 			fmt.Println("=======================================")
 			fmt.Println(d["status"])
-			fmt.Printf(
-				"%s %s\n",
-				d["emoji"], d["title"],
-			)
+			fmt.Printf("%s %s\n", d["emoji"], d["title"])
 			fmt.Println(d["url"])
-			fmt.Printf("=======================================\n")
 		}
 	},
 }
