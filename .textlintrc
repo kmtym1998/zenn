@@ -1,14 +1,11 @@
 {
   "rules": {
     "preset-ja-technical-writing": true,
-    "no-dropping-the-ra": true
+    "no-dropping-the-ra": true,
+    "ja-technical-writing/no-exclamation-question-mark": false
   },
   "filters": {
     "comments": true,
-    "allowlist": {
-      "allow": [
-        "ja-technical-writing/ja-no-weak-phrase"
-      ]
-    }
+    "allowlist": {}
   }
 }
