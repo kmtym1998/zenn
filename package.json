@@ -13,10 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.1.115",
     "exsc": "git+https://gist.github.com/cc7ad5bc1a8417b57accb254f31be6a1.git",
     "textlint": "^12.1.1",
     "textlint-filter-rule-allowlist": "^4.0.0",
-    "textlint-rule-preset-ja-technical-writing": "^7.0.0"
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-no-dropping-the-ra": "^3.0.0",
+    "textlint-rule-preset-ja-technical-writing": "^7.0.0",
+    "zenn-cli": "^0.1.115"
   }
 }
