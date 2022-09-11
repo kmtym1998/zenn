@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gen:article": "exsc gen:article"
+    "gen:article": "exsc gen:article",
+    "zenn:ls-remote": "./tmp/zenn-tool ls-remote"
   },
   "exsc": {
     "gen:article": "npx zenn new:article --slug \"$(date +%Y%m%d%H%M)\""
