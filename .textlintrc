@@ -6,7 +6,8 @@
       }
     },
     "no-dropping-the-ra": true,
-    "ja-technical-writing/no-exclamation-question-mark": false
+    "ja-technical-writing/no-exclamation-question-mark": false,
+    "ja-technical-writing/ja-no-weak-phrase": false
   },
   "filters": {
     "comments": true,
