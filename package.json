@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "zenn preview",
+    "preview": "zenn preview",
     "gen:article": "exsc gen:article",
     "zenn:ls-remote": "./tmp/zenn-tool ls-remote"
   },
   "exsc": {
-    "gen:article": "npx zenn new:article --slug \"$(date +%Y%m%d%H%M)\""
+    "gen:article": "npx zenn new:article --slug \"draft_$(date +%Y%m%d%H%M)\""
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,6 @@
     "textlint-filter-rule-comments": "^1.2.2",
     "textlint-rule-no-dropping-the-ra": "^3.0.0",
     "textlint-rule-preset-ja-technical-writing": "^7.0.0",
-    "zenn-cli": "^0.1.131"
+    "zenn-cli": "^0.1.132"
   }
 }
