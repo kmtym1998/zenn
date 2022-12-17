@@ -6,17 +6,13 @@
   "scripts": {
     "dev": "zenn preview",
     "preview": "zenn preview",
-    "gen:article": "exsc gen:article",
+    "gen:article": "npx zenn new:article --slug \"draft_$(date +%Y%m%d%H%M)\"",
     "zenn:ls-remote": "./tmp/zenn-tool ls-remote"
-  },
-  "exsc": {
-    "gen:article": "npx zenn new:article --slug \"draft_$(date +%Y%m%d%H%M)\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "exsc": "git+https://gist.github.com/cc7ad5bc1a8417b57accb254f31be6a1.git",
     "textlint": "^12.1.1",
     "textlint-filter-rule-allowlist": "^4.0.0",
     "textlint-filter-rule-comments": "^1.2.2",
