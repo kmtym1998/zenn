@@ -1,0 +1,25 @@
+# https://dev.classmethod.jp/articles/markdown-writing-with-textlint-ci/#toc-13
+name: Run Hoge
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        type: string
+        required: true
+        description: 'Text data'
+jobs:
+  run-text-lint:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Print inputs
+        run: |
+          echo "${TEXT_DATA}"
+          echo "${OPTIONAL_DATA}"
+          echo "${SECRET_DATA}"
+          echo "${FLAG_DATA}"
+        env:
+          TEXT_DATA: ${{ github.event.inputs.text }}
