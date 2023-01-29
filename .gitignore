@@ -2,3 +2,5 @@
 node_modules
 .DS_Store
 tmp
+go.work
+go.work.sum
