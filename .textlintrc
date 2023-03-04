@@ -1,12 +1,33 @@
 {
   "rules": {
+    "ja-space-between-half-and-full-width": {
+      "space": "never",
+      "exceptPunctuation": true
+    },
     "preset-ja-technical-writing": {
       "sentence-length": {
         "max": 100
+      },
+      "no-mix-dearu-desumasu": true,
+      "no-double-negative-ja": true,
+      "no-hankaku-kana": true,
+      "ja-no-abusage": true,
+      "ja-no-redundant-expression": true,
+      "ja-unnatural-alphabet": true,
+      "no-unmatched-pair": true,
+      "arabic-kanji-numbers": true,
+      "no-nfd": true,
+      "no-invalid-control-character": true,
+      "no-zero-width-spaces": true,
+      "no-exclamation-question-mark": false,
+      "max-ten": {
+        "max": 3
+      },
+      "ja-no-mixed-period": {
+        "periodMark": "。"
       }
     },
     "no-dropping-the-ra": true,
-    "ja-technical-writing/no-exclamation-question-mark": false,
     "ja-technical-writing/ja-no-weak-phrase": false
   },
   "filters": {
