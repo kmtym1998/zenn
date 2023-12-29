@@ -29,6 +29,7 @@
       }
     },
     "no-dropping-the-ra": true,
+    "ja-technical-writing/max-ten": false,
     "ja-technical-writing/ja-no-weak-phrase": false
   },
   "filters": {
