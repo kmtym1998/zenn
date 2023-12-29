@@ -1,8 +1,9 @@
 {
   "rules": {
     "ja-space-between-half-and-full-width": {
-      "space": "never",
-      "exceptPunctuation": true
+      "space": [
+        "alphabets"
+      ]
     },
     "preset-ja-technical-writing": {
       "sentence-length": {
